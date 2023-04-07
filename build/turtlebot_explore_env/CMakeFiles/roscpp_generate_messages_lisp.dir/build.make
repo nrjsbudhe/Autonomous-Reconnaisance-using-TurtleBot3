@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/src
+CMAKE_SOURCE_DIR = /home/rucha/EECE5550_Turtlebotics/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/build
+CMAKE_BINARY_DIR = /home/rucha/EECE5550_Turtlebotics/build
 
 # Utility rule file for roscpp_generate_messages_lisp.
 
@@ -63,10 +63,10 @@ turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/build: roscpp
 .PHONY : turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/build
 
 turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/clean:
-	cd /home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env && $(CMAKE_COMMAND) -P CMakeFiles/roscpp_generate_messages_lisp.dir/cmake_clean.cmake
+	cd /home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env && $(CMAKE_COMMAND) -P CMakeFiles/roscpp_generate_messages_lisp.dir/cmake_clean.cmake
 .PHONY : turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
 
 turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/depend:
-	cd /home/neeraj/nrj/EECE5550_Turtlebotics/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/neeraj/nrj/EECE5550_Turtlebotics/src /home/neeraj/nrj/EECE5550_Turtlebotics/src/turtlebot_explore_env /home/neeraj/nrj/EECE5550_Turtlebotics/build /home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env /home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/rucha/EECE5550_Turtlebotics/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/rucha/EECE5550_Turtlebotics/src /home/rucha/EECE5550_Turtlebotics/src/turtlebot_explore_env /home/rucha/EECE5550_Turtlebotics/build /home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env /home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : turtlebot_explore_env/CMakeFiles/roscpp_generate_messages_lisp.dir/depend
 

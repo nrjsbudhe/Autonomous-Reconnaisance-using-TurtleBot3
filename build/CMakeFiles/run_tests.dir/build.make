@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/src
+CMAKE_SOURCE_DIR = /home/rucha/EECE5550_Turtlebotics/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/build
+CMAKE_BINARY_DIR = /home/rucha/EECE5550_Turtlebotics/build
 
 # Utility rule file for run_tests.
 
@@ -67,6 +67,6 @@ CMakeFiles/run_tests.dir/clean:
 .PHONY : CMakeFiles/run_tests.dir/clean
 
 CMakeFiles/run_tests.dir/depend:
-	cd /home/neeraj/nrj/EECE5550_Turtlebotics/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/neeraj/nrj/EECE5550_Turtlebotics/src /home/neeraj/nrj/EECE5550_Turtlebotics/src /home/neeraj/nrj/EECE5550_Turtlebotics/build /home/neeraj/nrj/EECE5550_Turtlebotics/build /home/neeraj/nrj/EECE5550_Turtlebotics/build/CMakeFiles/run_tests.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/rucha/EECE5550_Turtlebotics/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/rucha/EECE5550_Turtlebotics/src /home/rucha/EECE5550_Turtlebotics/src /home/rucha/EECE5550_Turtlebotics/build /home/rucha/EECE5550_Turtlebotics/build /home/rucha/EECE5550_Turtlebotics/build/CMakeFiles/run_tests.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/run_tests.dir/depend
 

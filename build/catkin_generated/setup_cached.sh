@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/neeraj/nrj/EECE5550_Turtlebotics/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/neeraj/nrj/EECE5550_Turtlebotics/devel/lib:$LD_LIBRARY_PATH"
-export PWD='/home/neeraj/nrj/EECE5550_Turtlebotics/build'
-export ROS_PACKAGE_PATH="/home/neeraj/nrj/EECE5550_Turtlebotics/src:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/rucha/EECE5550_Turtlebotics/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/rucha/EECE5550_Turtlebotics/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/home/rucha/EECE5550_Turtlebotics/devel/share/common-lisp'
+export ROS_PACKAGE_PATH="/home/rucha/EECE5550_Turtlebotics/src:$ROS_PACKAGE_PATH"

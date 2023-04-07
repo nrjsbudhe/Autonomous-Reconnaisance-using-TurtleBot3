@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/src
+CMAKE_SOURCE_DIR = /home/rucha/EECE5550_Turtlebotics/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/build
+CMAKE_BINARY_DIR = /home/rucha/EECE5550_Turtlebotics/build
 
 # Utility rule file for std_msgs_generate_messages_cpp.
 
@@ -63,10 +63,10 @@ turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/build: std_m
 .PHONY : turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
 
 turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean:
-	cd /home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env && $(CMAKE_COMMAND) -P CMakeFiles/std_msgs_generate_messages_cpp.dir/cmake_clean.cmake
+	cd /home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env && $(CMAKE_COMMAND) -P CMakeFiles/std_msgs_generate_messages_cpp.dir/cmake_clean.cmake
 .PHONY : turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
 
 turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/depend:
-	cd /home/neeraj/nrj/EECE5550_Turtlebotics/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/neeraj/nrj/EECE5550_Turtlebotics/src /home/neeraj/nrj/EECE5550_Turtlebotics/src/turtlebot_explore_env /home/neeraj/nrj/EECE5550_Turtlebotics/build /home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env /home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/rucha/EECE5550_Turtlebotics/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/rucha/EECE5550_Turtlebotics/src /home/rucha/EECE5550_Turtlebotics/src/turtlebot_explore_env /home/rucha/EECE5550_Turtlebotics/build /home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env /home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : turtlebot_explore_env/CMakeFiles/std_msgs_generate_messages_cpp.dir/depend
 
