@@ -1,4 +1,4 @@
-prefix=/home/rucha/EECE5550_Turtlebotics/devel
+prefix=/home/neeraj/nrj/EECE5550_Turtlebotics/devel
 
 Name: turtlebot_explore_env
 Description: Description of turtlebot_explore_env

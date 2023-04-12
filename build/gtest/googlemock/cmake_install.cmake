@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/rucha/EECE5550_Turtlebotics/install")
+  set(CMAKE_INSTALL_PREFIX "/home/neeraj/nrj/EECE5550_Turtlebotics/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/rucha/EECE5550_Turtlebotics/build/gtest/googletest/cmake_install.cmake")
+  include("/home/neeraj/nrj/EECE5550_Turtlebotics/build/gtest/googletest/cmake_install.cmake")
 
 endif()
 

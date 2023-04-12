@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/rucha/EECE5550_Turtlebotics/src
+CMAKE_SOURCE_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/rucha/EECE5550_Turtlebotics/build
+CMAKE_BINARY_DIR = /home/neeraj/nrj/EECE5550_Turtlebotics/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -137,9 +137,9 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rucha/EECE5550_Turtlebotics/build/CMakeFiles /home/rucha/EECE5550_Turtlebotics/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neeraj/nrj/EECE5550_Turtlebotics/build/CMakeFiles /home/neeraj/nrj/EECE5550_Turtlebotics/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rucha/EECE5550_Turtlebotics/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neeraj/nrj/EECE5550_Turtlebotics/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

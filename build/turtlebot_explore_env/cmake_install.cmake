@@ -1,8 +1,8 @@
-# Install script for directory: /home/rucha/EECE5550_Turtlebotics/src/turtlebot_explore_env
+# Install script for directory: /home/neeraj/nrj/EECE5550_Turtlebotics/src/turtlebot_explore_env
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/rucha/EECE5550_Turtlebotics/install")
+  set(CMAKE_INSTALL_PREFIX "/home/neeraj/nrj/EECE5550_Turtlebotics/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env/catkin_generated/installspace/turtlebot_explore_env.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env/catkin_generated/installspace/turtlebot_explore_env.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot_explore_env/cmake" TYPE FILE FILES
-    "/home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env/catkin_generated/installspace/turtlebot_explore_envConfig.cmake"
-    "/home/rucha/EECE5550_Turtlebotics/build/turtlebot_explore_env/catkin_generated/installspace/turtlebot_explore_envConfig-version.cmake"
+    "/home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env/catkin_generated/installspace/turtlebot_explore_envConfig.cmake"
+    "/home/neeraj/nrj/EECE5550_Turtlebotics/build/turtlebot_explore_env/catkin_generated/installspace/turtlebot_explore_envConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot_explore_env" TYPE FILE FILES "/home/rucha/EECE5550_Turtlebotics/src/turtlebot_explore_env/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/turtlebot_explore_env" TYPE FILE FILES "/home/neeraj/nrj/EECE5550_Turtlebotics/src/turtlebot_explore_env/package.xml")
 endif()
 
