@@ -6,8 +6,7 @@
     <param name="/explore_lite/min_frontier_size" value="0.2"/> 
     <param name="/explore_lite/progress_timeout" value="15.0"/> 
     <param name="/explore_lite/planner_frequency" value="0.3"/>
-
-
+    
     <include file="/opt/ros/noetic/share/turtlebot3_slam/launch/turtlebot3_slam.launch" />
 
     <include file="/opt/ros/noetic/share/turtlebot3_navigation/launch/move_base.launch" />
