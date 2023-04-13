@@ -1,8 +1,0 @@
-prefix=/home/neeraj/nrj/EECE5550_Turtlebotics/install
-
-Name: turtlebot_explore_env
-Description: Description of turtlebot_explore_env
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

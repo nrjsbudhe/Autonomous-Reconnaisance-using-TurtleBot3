@@ -1,2 +1,0 @@
-turtlebot_explore_env
--DCATKIN_DEVEL_PREFIX=/home/neeraj/nrj/EECE5550_Turtlebotics/devel -DCMAKE_INSTALL_PREFIX=/home/neeraj/nrj/EECE5550_Turtlebotics/install -G Unix Makefiles

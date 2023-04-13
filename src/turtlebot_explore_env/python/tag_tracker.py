@@ -8,7 +8,6 @@ from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point
 import tf2_ros
 from scipy.spatial.transform import Rotation as R
-import json
 
 marker_pub = rospy.Publisher('point_marker', Marker, queue_size=10)
 
@@ -101,7 +100,7 @@ def main():
         if (tags_string):
             listOfTags = tags_string.split()
         
-        #print(listOfTags)
+        print(listOfTags)
 
         for tag in listOfTags:
 
@@ -125,8 +124,9 @@ def main():
             #print(location)
             points_to_publish.append(Point(location[0], location[1], location[2]))
 
-        marker.points = points_to_publish
-        marker_pub.publish(marker)
+        if(points_to_publish):
+            marker.points = points_to_publish
+            marker_pub.publish(marker)
             # points_to_publish.append(point_msg)
             #point_pub.publish(point_msg)
 
