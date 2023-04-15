@@ -104,7 +104,7 @@ def main():
 
         for tag in listOfTags:
 
-            check, tag_to_odom = get_transformation_matrix('odom',tag)
+            check, tag_to_odom = get_transformation_matrix('camera_frame',tag)
             if(check):
                 dict_tag_to_odom[tag] = tag_to_odom
             
@@ -127,17 +127,9 @@ def main():
         if(points_to_publish):
             marker.points = points_to_publish
             marker_pub.publish(marker)
-            # points_to_publish.append(point_msg)
-            #point_pub.publish(point_msg)
 
-        # if (points_to_publish):
-        #     point_pub.publish(points_to_publish)
-        #print(dict_tag_to_odom)
         rate.sleep()
 
-    # json_string = json.dumps(points_to_publish)
-    # with open('points_on_map.txt', 'w') as f:
-    #     f.write(json_string)
         		
 if __name__ == '__main__':
     try:

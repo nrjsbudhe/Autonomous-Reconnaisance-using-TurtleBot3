@@ -6,7 +6,7 @@ cmd_pub = None
 MoveStartTime = None
 MoveEndTime = None
 MoveDuration = rospy.Duration(20)
-SpinDuration = rospy.Duration(0)
+SpinDuration = rospy.Duration(10)
 
 def get_command(msg):
     global MoveStartTime, MoveEndTime
@@ -14,7 +14,7 @@ def get_command(msg):
         # replace motion command with a spin.
         msg_new  = Twist()
         msg_new.linear.x = 0
-        msg_new.angular.z = 0.3142 
+        msg_new.angular.z = 0.6282
         SpinStartTime = rospy.Time.now()
         SpinEndTime = SpinStartTime + SpinDuration
         while rospy.Time.now() <= SpinEndTime:
