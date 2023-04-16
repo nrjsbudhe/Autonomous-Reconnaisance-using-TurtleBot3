@@ -9,6 +9,7 @@ from geometry_msgs.msg import Point
 import tf2_ros
 from scipy.spatial.transform import Rotation as R
 from nav_msgs.msg import Path
+from cartographer_ros_msgs.msg import SubmapList, TrajectoryStates
 
 marker_pub = rospy.Publisher('point_marker', Marker, queue_size=10)
 
@@ -83,14 +84,16 @@ CALLBACK FUNCTIONS
 '''
 def trajectory_callback(data):
     global dict_tag_to_baselink
-    global dist_baselink_to_map
+    global dict_baselink_to_map
 
-    for tag in dist_tag_to_baselink.values():
-        target_time = dist_tag_to_baselink[tag][1]
+    for tag in dict_tag_to_baselink.keys():
+        target_time = dict_tag_to_baselink[tag][1]
+        print(target_time)
         # target_time = rospy.Time(123456789.0)
         closest_pose = None
         closest_time_diff = None
         for pose in data.poses:
+            print(pose.header.stamp)
             time_diff = abs((pose.header.stamp - target_time).to_sec())
             if closest_pose is None or time_diff < closest_time_diff:
                 closest_pose = pose
@@ -108,16 +111,14 @@ def detection_callback(data):
 
 
 def main():
-    global tf_listener, tf_buffer, listOfTags, dist_tag_to_baselink, dict_baselink_to_map
+    global tf_listener, tf_buffer, listOfTags, dict_tag_to_baselink, dict_baselink_to_map
     rospy.init_node('tag_tracking_node')
     rospy.Subscriber("/apriltag_detections", String, detection_callback)
-    rospy.Subscriber("/trajectory", Path, trajectory_callback)
+    
 
 
     tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(30))
     tf_listener = tf2_ros.TransformListener(tf_buffer)
-
-    dict_tag_to_cam = {}
 
     rate = rospy.Rate(10.0)
     
@@ -138,14 +139,14 @@ def main():
         if (tags_string):
             listOfTags = tags_string.split()
         
-        print(listOfTags)
+        #print(listOfTags)
 
         # Update Tags to Baselink  Dictionary
         for tag in listOfTags:
 
             check, tag_to_baselink = get_transformation_matrix('base_link',tag)
             if(check):
-                dict_tag_to_baselink[tag] = (tag_to_baselink,rospy.time())
+                dict_tag_to_baselink[tag] = (tag_to_baselink,rospy.get_time())
 
         ###############################################################
         ##  DICTIONARY ITERATION STEP
@@ -153,7 +154,7 @@ def main():
 
         points_to_publish = []
         for tag in dict_tag_to_baselink.keys():
-            
+            #print(dict_tag_to_baselink[tag][1])
             if tag in dict_baselink_to_map.keys():
                 tag_to_map = dict_baselink_to_map[tag] @ dict_tag_to_baselink[tag][0]
             
@@ -162,6 +163,7 @@ def main():
                 #print(location)
                 points_to_publish.append(Point(location[0], location[1], location[2]))
 
+        #print(points_to_publish)
         if(points_to_publish):
             marker.points = points_to_publish
             marker_pub.publish(marker)
