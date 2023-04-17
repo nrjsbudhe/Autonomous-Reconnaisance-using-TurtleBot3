@@ -9,6 +9,6 @@
     
     <include file="/opt/ros/noetic/share/turtlebot3_slam/launch/turtlebot3_slam.launch" />
     <include file="/opt/ros/noetic/share/explore_lite/launch/explore.launch" />
-    <node pkg="turtlebot_explore_env" type="custom_planner.py" name="cmd_interrupt_node" output="screen" />		
+    <node pkg="turtlebot_explore_env" type="cartographer_remapping.py" name="mapc_node" output="screen" />		
 
 </launch>
