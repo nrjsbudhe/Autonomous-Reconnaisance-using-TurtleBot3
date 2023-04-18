@@ -3,16 +3,17 @@ from cgitb import lookup
 import rospy
 import numpy as np
 from std_msgs.msg import String 
-from geometry_msgs.msg import PointStamped 
+#from geometry_msgs.msg import PointStamped 
 from datetime import datetime
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point
 import tf2_ros
 from scipy.spatial.transform import Rotation as R
-from nav_msgs.msg import Path
+#from nav_msgs.msg import Path
 from cartographer_ros_msgs.srv import TrajectoryQuery
 
 marker_pub = rospy.Publisher('point_marker', Marker, queue_size=10)
+get_trajectory_query = rospy.ServiceProxy('trajectory_query', TrajectoryQuery)
 
 # Create a marker message
 marker = Marker()
@@ -31,7 +32,6 @@ marker.color.g = 0.0
 marker.color.b = 0.0
 
 filepath = None
-listOfTags = []
 
 dict_tag_to_baselink = {}
 dict_baselink_to_map = {}
@@ -66,11 +66,11 @@ def get_pose_to_SE3(Tx, Ty, Tz, X, Y, Z, W):
     
     return T
 
-def get_transformation_matrix(TF_to, TF_from):
+def get_transformation_matrix(TF_to, TF_from, TF_at_time):
         global tf_buffer
-
+        
         try:
-            pose = tf_buffer.lookup_transform(TF_to, TF_from,rospy.Time())
+            pose = tf_buffer.lookup_transform(TF_to, TF_from, TF_at_time)
             lookup_time = pose.header.stamp.to_sec()
             T = get_pose_to_SE3(pose.transform.translation.x,pose.transform.translation.y,pose.transform.translation.z,
                                 pose.transform.rotation.x,pose.transform.rotation.y,pose.transform.rotation.z,pose.transform.rotation.w)
@@ -93,24 +93,32 @@ def get_trajectory(response):
         t_secs = dict_tag_to_baselink[tag][1]
 
         if t_secs <= response.trajectory[-1].header.stamp.to_sec():
+            rospy.wait_for_service('/trajectory_query')
+            response = get_trajectory_query(0)
 
-            for pose_id in range(len(response.trajectory)):
-                POSE = response.trajectory[pose_id]
-                # print("variable",POSE.header.stamp.to_sec())
-                # print("target",t_secs)
-                if POSE.header.stamp.to_sec() > t_secs:
-                    target_pose = response.trajectory[pose_id].pose
+            # for pose_id in range(len(response.trajectory)):
+            #     POSE = response.trajectory[pose_id]
+            #     # print("variable",POSE.header.stamp.to_sec())
+            #     # print("target",t_secs)
+            #     if POSE.header.stamp.to_sec() > t_secs:
+            #         target_pose = response.trajectory[pose_id].pose
+            #         target_pose_SE3 = get_pose_to_SE3(target_pose.position.x,target_pose.position.y,target_pose.position.z,target_pose.orientation.x,target_pose.orientation.y,target_pose.orientation.z,target_pose.orientation.w)
+            #         #print("From Trajectory")
+            #         break
+            for curr_pose in response.trajectory:
+                if curr_pose.header.stamp.to_sec() > t_secs:
+                    target_pose = curr_pose.pose
                     target_pose_SE3 = get_pose_to_SE3(target_pose.position.x,target_pose.position.y,target_pose.position.z,target_pose.orientation.x,target_pose.orientation.y,target_pose.orientation.z,target_pose.orientation.w)
-                    #print("From Trajectory")
                     break
         else:
-            #print("realtime")
-            check, target_pose_SE3, lookup_time = get_transformation_matrix('map','base_link')
+            check, target_pose_SE3, lookup_time = get_transformation_matrix('map','base_link', t_secs.from_sec())
         
         #print(target_pose_SE3)
         dict_baselink_to_map[tag] = target_pose_SE3
         
-
+'''
+CALLBACK FUNCTIONS
+'''
 def detection_callback(data):
     global tags_string
     tags_string = data.data
@@ -119,32 +127,30 @@ def detection_callback(data):
 
 
 def main():
-    global tf_listener, tf_buffer, listOfTags, dict_tag_to_baselink, dict_baselink_to_map
+    global tf_listener, tf_buffer, dict_tag_to_baselink, dict_baselink_to_map
     rospy.init_node('tag_tracking_node')
     rospy.Subscriber("/apriltag_detections", String, detection_callback)
-    get_trajectory_query = rospy.ServiceProxy('trajectory_query', TrajectoryQuery)
 
 
-    tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(30))
+    tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(10))
     tf_listener = tf2_ros.TransformListener(tf_buffer)
 
     rate = rospy.Rate(10.0)
     
+    list_of_tags = []
     while not rospy.is_shutdown():
 
-        rospy.wait_for_service('/trajectory_query')
-        response = get_trajectory_query(0)
-        get_trajectory(response)
+        get_trajectory()
         
         # Get number of detected tags
         if (tags_string):
-            listOfTags = tags_string.split()
+            list_of_tags = tags_string.split()
         
 
         # Update Tags to Baselink  Dictionary
-        for tag in listOfTags:
+        for tag in list_of_tags:
             #if tag not in dict_tag_to_baselink.keys(): 
-                check, tag_to_baselink, lookup_time = get_transformation_matrix('base_link',tag)
+                check, tag_to_baselink, lookup_time = get_transformation_matrix('base_link', tag, 0)
                 if(check):
                     dict_tag_to_baselink[tag] = (tag_to_baselink,lookup_time)
 
