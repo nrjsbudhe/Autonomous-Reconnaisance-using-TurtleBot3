@@ -51,5 +51,15 @@ We have used explore_lite for planning and exploration of the area.
 
    `sudo apt install ros-${ROS_DISTRO}-multirobot-map-mergeros-${ROS_DISTRO}-explore-lite`
 
-Cartographer launches the move_base package by default which handles the path planning of the robot. 
+Cartographer launches the move_base package by default which handles the path planning of the robot. Cartographer's map is probabilistic and its values range between {-1, [0-100]}. Now, explore_lite expects an integer map [-1, 0, 1] which denotes unknown, occupied, and unoccupied space respectively. To convert the probabilistic map of cartograher into the integer map, a custom node `cartographer_remapping.py` is included in our ros package.
 
+8. To launch the entire navigation and SLAM stack, run:
+
+   `roslaunch turtlebot3_explore_env explore_env.launch`
+
+## Tag Tracking
+Once the turtlebot is deployed in the environment, and the navigation and SLAM node is launched, it is ready to detect tags and record the position of the apriltags in the environment. To handle this procedure, a custom node `tag_tracker.py` is used. To run this node, run:
+
+`python3 tag_tracker.py`
+
+If the system is running as expected, you should be able to see the location of the apriltags in the Rviz environment. These poses are saved into a text file on completion of the reconnaisance
