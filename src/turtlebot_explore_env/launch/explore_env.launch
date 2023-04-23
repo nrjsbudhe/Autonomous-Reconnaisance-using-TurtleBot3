@@ -1,6 +1,6 @@
 <launch>
 
-    <param name="/explore_costmap/costmap_topic" value="/map" />
+    <param name="/explore_costmap/costmap_topic" value="/move_base/global_costmap/costmap" />
     <param name="/explore_lite/exploration_strategy" value="frontier-based" />
     <param name="/explore_lite/map_topic" value="/map" /> 
     <param name="/explore_lite/min_frontier_size" value="0.2"/> 

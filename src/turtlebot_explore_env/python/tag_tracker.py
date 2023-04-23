@@ -68,10 +68,10 @@ def get_pose_to_SE3(Tx, Ty, Tz, X, Y, Z, W):
 
 def get_transformation_matrix(TF_to, TF_from, TF_at_time):
         global tf_buffer
-        
+      
         try:
             pose = tf_buffer.lookup_transform(TF_to, TF_from, TF_at_time)
-            lookup_time = pose.header.stamp.to_sec()
+            lookup_time = pose.header.stamp
             T = get_pose_to_SE3(pose.transform.translation.x,pose.transform.translation.y,pose.transform.translation.z,
                                 pose.transform.rotation.x,pose.transform.rotation.y,pose.transform.rotation.z,pose.transform.rotation.w)
             
@@ -85,16 +85,18 @@ def get_transformation_matrix(TF_to, TF_from, TF_at_time):
 '''
 CALLBACK FUNCTIONS
 '''
-def get_trajectory(response):
+def get_trajectory():
     global dict_tag_to_baselink
     global dict_baselink_to_map
 
     for tag in dict_tag_to_baselink.keys():
-        t_secs = dict_tag_to_baselink[tag][1]
+        lookup_time = dict_tag_to_baselink[tag][1]
+        t_secs = lookup_time.to_sec()
 
+        rospy.wait_for_service('/trajectory_query')
+        response = get_trajectory_query(0)
+        
         if t_secs <= response.trajectory[-1].header.stamp.to_sec():
-            rospy.wait_for_service('/trajectory_query')
-            response = get_trajectory_query(0)
 
             # for pose_id in range(len(response.trajectory)):
             #     POSE = response.trajectory[pose_id]
@@ -107,14 +109,17 @@ def get_trajectory(response):
             #         break
             for curr_pose in response.trajectory:
                 if curr_pose.header.stamp.to_sec() > t_secs:
+                    print("blah blah")
                     target_pose = curr_pose.pose
                     target_pose_SE3 = get_pose_to_SE3(target_pose.position.x,target_pose.position.y,target_pose.position.z,target_pose.orientation.x,target_pose.orientation.y,target_pose.orientation.z,target_pose.orientation.w)
-                    break
+                    dict_baselink_to_map[tag] = target_pose_SE3
+                    return
         else:
-            check, target_pose_SE3, lookup_time = get_transformation_matrix('map','base_link', t_secs.from_sec())
+            check, target_pose_SE3, _ = get_transformation_matrix('map','base_link', lookup_time)
+            if(check):
+                dict_baselink_to_map[tag] = target_pose_SE3
+            return
         
-        #print(target_pose_SE3)
-        dict_baselink_to_map[tag] = target_pose_SE3
         
 '''
 CALLBACK FUNCTIONS
@@ -132,45 +137,46 @@ def main():
     rospy.Subscriber("/apriltag_detections", String, detection_callback)
 
 
-    tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(10))
+    tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(30))
     tf_listener = tf2_ros.TransformListener(tf_buffer)
 
-    rate = rospy.Rate(10.0)
+    rate = rospy.Rate(5.0)
     
     list_of_tags = []
     while not rospy.is_shutdown():
-
+        # Get number of detected tags
         get_trajectory()
         
-        # Get number of detected tags
         if (tags_string):
             list_of_tags = tags_string.split()
         
+        print(dict_baselink_to_map)
 
         # Update Tags to Baselink  Dictionary
         for tag in list_of_tags:
             #if tag not in dict_tag_to_baselink.keys(): 
-                check, tag_to_baselink, lookup_time = get_transformation_matrix('base_link', tag, 0)
+                check, tag_to_baselink, lookup_time = get_transformation_matrix('base_link', tag, rospy.Time())
                 if(check):
                     dict_tag_to_baselink[tag] = (tag_to_baselink,lookup_time)
 
         ###############################################################
         ##  DICTIONARY ITERATION STEP
         ###############################################################
-
+        
         points_to_publish = []
 
         for tag in dict_tag_to_baselink.keys():
             #print(dict_tag_to_baselink[tag][1])
             if tag in dict_baselink_to_map.keys():
-                tag_to_map = dict_tag_to_baselink[tag][0] @ dict_baselink_to_map[tag] 
+                tag_to_map = dict_baselink_to_map[tag] @ dict_tag_to_baselink[tag][0]
             
                 location = tag_to_map[0:3, 3]
-                print(tag_to_map)
-                #print(location)
+                print(tag)
+                print("B TO M: \n", dict_baselink_to_map[tag])
+                print("T TO B: \n", dict_tag_to_baselink[tag][0])
                 points_to_publish.append(Point(location[0], location[1], location[2]))
 
-        #print(points_to_publish)
+        print(points_to_publish)
         if(points_to_publish):
             marker.points = points_to_publish
             marker_pub.publish(marker)
