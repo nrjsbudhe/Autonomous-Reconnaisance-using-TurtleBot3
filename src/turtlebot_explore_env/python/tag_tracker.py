@@ -98,15 +98,6 @@ def get_trajectory():
         
         if t_secs <= response.trajectory[-1].header.stamp.to_sec():
 
-            # for pose_id in range(len(response.trajectory)):
-            #     POSE = response.trajectory[pose_id]
-            #     # print("variable",POSE.header.stamp.to_sec())
-            #     # print("target",t_secs)
-            #     if POSE.header.stamp.to_sec() > t_secs:
-            #         target_pose = response.trajectory[pose_id].pose
-            #         target_pose_SE3 = get_pose_to_SE3(target_pose.position.x,target_pose.position.y,target_pose.position.z,target_pose.orientation.x,target_pose.orientation.y,target_pose.orientation.z,target_pose.orientation.w)
-            #         #print("From Trajectory")
-            #         break
             for curr_pose in response.trajectory:
                 if curr_pose.header.stamp.to_sec() > t_secs:
                     print("blah blah")
@@ -122,21 +113,20 @@ def get_trajectory():
         
         
 '''
-CALLBACK FUNCTIONS
+CALLBACK FUNCTION
 '''
 def detection_callback(data):
     global tags_string
     tags_string = data.data
-    # print(tags_string)
-
-
 
 def main():
     global tf_listener, tf_buffer, dict_tag_to_baselink, dict_baselink_to_map
+
+    # Initialize Nodes and add subscriber topic
     rospy.init_node('tag_tracking_node')
     rospy.Subscriber("/apriltag_detections", String, detection_callback)
 
-
+    # Create tf_buffer and tf_listener objects for using transformations from TF tree
     tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(30))
     tf_listener = tf2_ros.TransformListener(tf_buffer)
 
@@ -159,10 +149,8 @@ def main():
                 if(check):
                     dict_tag_to_baselink[tag] = (tag_to_baselink,lookup_time)
 
-        ###############################################################
-        ##  DICTIONARY ITERATION STEP
-        ###############################################################
-        
+
+        # Generate transformation: Tag to Map
         points_to_publish = []
 
         for tag in dict_tag_to_baselink.keys():
@@ -176,6 +164,7 @@ def main():
                 print("T TO B: \n", dict_tag_to_baselink[tag][0])
                 points_to_publish.append(Point(location[0], location[1], location[2]))
 
+        # Publish points on MarkerArray Topic
         print(points_to_publish)
         if(points_to_publish):
             marker.points = points_to_publish
