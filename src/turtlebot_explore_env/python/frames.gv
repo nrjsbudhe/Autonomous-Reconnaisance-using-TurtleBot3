@@ -1,0 +1,16 @@
+digraph G {
+"base_link" -> "camera_frame"[label="Broadcaster: /static_transform_publisher_1681931437093740151\nAverage rate: 10.198 Hz\nMost recent transform: 1681932171.652 ( 10.537 sec old)\nBuffer length: 4.707 sec\n"];
+"base_footprint" -> "base_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1681932182.189 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "base_footprint"[label="Broadcaster: /turtlebot3_core\nAverage rate: 15.518 Hz\nMost recent transform: 1681932172.059 ( 10.130 sec old)\nBuffer length: 4.769 sec\n"];
+"map" -> "odom"[label="Broadcaster: /cartographer_node\nAverage rate: 100.200 Hz\nMost recent transform: 1681932171.652 ( 10.537 sec old)\nBuffer length: 4.611 sec\n"];
+"camera_frame" -> "tag_2"[label="Broadcaster: /apriltag_ros_continuous_node\nAverage rate: 10.225 Hz\nMost recent transform: 1681932171.887 ( 10.302 sec old)\nBuffer length: 4.596 sec\n"];
+"base_link" -> "wheel_left_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 15.318 Hz\nMost recent transform: 1681932171.964 ( 10.225 sec old)\nBuffer length: 4.570 sec\n"];
+"base_link" -> "wheel_right_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 15.318 Hz\nMost recent transform: 1681932171.964 ( 10.225 sec old)\nBuffer length: 4.570 sec\n"];
+"base_link" -> "caster_back_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1681932182.189 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "imu_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1681932182.189 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "base_scan"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1681932182.189 sec old)\nBuffer length: 0.000 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1681932182.189"[ shape=plaintext ] ;
+ }->"map";
+}

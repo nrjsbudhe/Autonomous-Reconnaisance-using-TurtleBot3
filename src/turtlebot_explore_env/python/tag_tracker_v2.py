@@ -7,12 +7,13 @@ from geometry_msgs.msg import PointStamped
 from datetime import datetime
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point
-import tf2_ros
+import tf
 from scipy.spatial.transform import Rotation as R
 from nav_msgs.msg import Path
 from cartographer_ros_msgs.srv import TrajectoryQuery
 from apriltag_ros.msg import AprilTagDetectionArray
 
+tf_listener = tf.TransformListener()
 
 marker_pub = rospy.Publisher('point_marker', Marker, queue_size=10)
 
@@ -32,19 +33,10 @@ marker.color.r = 1.0
 marker.color.g = 0.0
 marker.color.b = 0.0
 
-filepath = None
 listOfTags = []
 
-dict_tag_to_baselink = {}
+dict_tag_to_baselink = []
 dict_baselink_to_map = {}
-
-
-tags_string = None
-tf_listener = None
-tf_buffer = None
-
-Z_UP = np.array([[0., 0., 1., 0.],[-1., 0., 0., 0.],[0., -1., 0., 0.],[0., 0., 0., 1.]])
-CAMERA_TO_BASELINK = np.array([[1.,0.,0.,0.03],[0.,1.,0.,0.],[0.,0.,1.,0.1],[0.,0.,0.,1.]])
 
 '''
     get_pose_to_SE3
@@ -72,10 +64,10 @@ def get_pose_to_SE3(Tx, Ty, Tz, X, Y, Z, W):
     return T
 
 def get_transformation_matrix(TF_to, TF_from):
-        global tf_buffer
+        global tf_listener
 
         try:
-            pose = tf_buffer.lookup_transform(TF_to, TF_from,rospy.Time())
+            pose = tf_listener.lookup_transform(TF_to, TF_from,rospy.Time(0))
             lookup_time = pose.header.stamp.to_sec()
             T = get_pose_to_SE3(pose.transform.translation.x,pose.transform.translation.y,pose.transform.translation.z,
                                 pose.transform.rotation.x,pose.transform.rotation.y,pose.transform.rotation.z,pose.transform.rotation.w)
@@ -93,7 +85,6 @@ CALLBACK FUNCTIONS
 def get_trajectory(response):
     global dict_tag_to_baselink
     global dict_baselink_to_map
-    global tf_buffer
     global tf_listener
     
     try:
@@ -111,7 +102,7 @@ def get_trajectory(response):
                         break
             else:
                 print("realtime")
-                target_pose = tf_buffer.lookup_transform('map', 'base_link',rospy.Time())
+                target_pose = tf_listener.lookup_transform('map', 'base_link',rospy.Time(0))
                 target_pose_R = target_pose.transform.rotation
                 target_pose_T = target_pose.transform.translation
 
@@ -128,27 +119,30 @@ def detection_callback(data):
 
     global dict_tag_to_baselink
     for tag in data.detections:
-        if np.linalg.norm([tag.pose.pose.pose.position.y,tag.pose.pose.pose.position.z]) < 1.2:
-            dict_tag_to_baselink[tag.id[0]] = (tag.pose.pose.pose,tag.pose.header.stamp)
+            dict_tag_to_baselink[tag.id[0]] = (0,tag.pose.header.stamp)
 
 
 def main():
-    global tf_listener, tf_buffer, listOfTags, dict_tag_to_baselink, dict_baselink_to_map
+    global tf_listener, dict_tag_to_baselink, dict_baselink_to_map
     rospy.init_node('tag_tracking_node')
     rospy.Subscriber("/tag_detections", AprilTagDetectionArray, detection_callback)
     get_trajectory_query = rospy.ServiceProxy('trajectory_query', TrajectoryQuery)
-
-
-    tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(20))
-    tf_listener = tf2_ros.TransformListener(tf_buffer)
 
     rate = rospy.Rate(10.0)
     
     while not rospy.is_shutdown():
         
-        rospy.wait_for_service('/trajectory_query')
+        #rospy.wait_for_service('/trajectory_query')
         response = get_trajectory_query(0)
         get_trajectory(response)
+
+        for tag_id in dict_tag_to_baselink.keys():
+            try:
+                apriltag_wrt_baselink = tf_listener.lookupTransform(f'/tag_{tag_id}','/baselink', rospy.Time(0))
+            except(tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+                continue
+
+            dict_tag_to_baselink[tag_id][0] = apriltag_wrt_baselink    
         
         # Publish location of Tags on MarkerArray topic
         points_to_publish = []
@@ -160,11 +154,11 @@ def main():
                 tag_to_baselink = get_pose_to_SE3(dict_tag_to_baselink[tag][0].position.x,dict_tag_to_baselink[tag][0].position.y,dict_tag_to_baselink[tag][0].position.z,dict_tag_to_baselink[tag][0].orientation.x,dict_tag_to_baselink[tag][0].orientation.y,dict_tag_to_baselink[tag][0].orientation.z,dict_tag_to_baselink[tag][0].orientation.w)
                 
                 # Generate tag_to_map and Get translational component from tag_to_map
-                tag_to_map = baselink_to_map @ CAMERA_TO_BASELINK @ Z_UP @ tag_to_baselink              
+                tag_to_map = baselink_to_map @ tag_to_baselink              
                 location = tag_to_map[0:3, 3]
 
                 # Add points to publish to points_to_publish list
-                points_to_publish.append(Point(location[0]/2, location[1]/2, location[2]/2))
+                points_to_publish.append(Point(location[0], location[1], location[2]))
 
         if points_to_publish:
             marker.points = points_to_publish

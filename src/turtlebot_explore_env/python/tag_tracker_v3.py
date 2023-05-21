@@ -119,16 +119,18 @@ class TagTracker:
 if __name__ == "__main__":
 	rospy.init_node('apriltag_detector', anonymous=True)
 	tag_tracker = TagTracker()
-	
-	while not rospy.is_shutdown():
-		markers_to_publish = []
-		for tag in tag_tracker.dict_markers.keys():
-			markers_to_publish.append(Point(tag_tracker.dict_markers[tag][0],
-											tag_tracker.dict_markers[tag][1],
-											tag_tracker.dict_markers[tag][2]))
 
-		if markers_to_publish:
-			print(markers_to_publish)
-			tag_tracker.publishMarkers(markers_to_publish)
+	rospy.spin()
+
+	# while not rospy.is_shutdown():
+	# 	markers_to_publish = []
+	# 	# for tag in tag_tracker.dict_markers.keys():
+	# 	# 	markers_to_publish.append(Point(tag_tracker.dict_markers[tag][0],
+	# 	# 									tag_tracker.dict_markers[tag][1],
+	# 	# 									tag_tracker.dict_markers[tag][2]))
+
+	# 	if markers_to_publish:
+	# 		print(markers_to_publish)
+	# 		tag_tracker.publishMarkers(markers_to_publish)
 		
-		rospy.Rate(10).sleep()
+	# 	rospy.Rate(10).sleep()
