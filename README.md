@@ -3,6 +3,8 @@
 ## Introduction
 In this project, we designed and implemented a completely autonomous system to perform reconnaissance in a simulated disaster environment. AprilTags were used as a proxy for victims in the simulated environment. The primary goals of this exercise were to map the unknown environment, localize the robot and accurately locate the AprilTags. A Turtlebot3 Burger was deployed to accomplish these tasks. The robot equipped with an array of sensors including LDS-01 LIDAR, a Raspberry Pi camera module V2 with Sony IMX219 8-megapixel sensor, and an IMU. Cartographer package was used to implement SLAM. To set up your turtlebot, follow the steps 3.1 to 3.3 on this [website](https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/#pc-setup)
 
+![alt text](https://github.com/nrjsbudhe/Autonomous-Reconnaisance-using-TurtleBot3/blob/main/images/1.jpeg)
+
 ## Connect with the turtlebot
 1. The robot is connected to the host PC via SSH. Ensure that the turtlebot and the host PC are connected over the same network.
 
