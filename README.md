@@ -65,3 +65,7 @@ Once the turtlebot is deployed in the environment, and the navigation and SLAM n
 `python3 tag_tracker.py`
 
 If the system is running as expected, you should be able to see the location of the apriltags in the Rviz environment. These poses are saved into a text file on completion of the reconnaisance
+
+## Results
+You can see that the generated probabilistic map is embedded with locations of AprilTags. The accuracy of detections was estimated to be between 20 to 30 cm.
+![alt text](https://github.com/nrjsbudhe/Autonomous-Reconnaisance-using-TurtleBot3/blob/b929e0bc3fa6c16fd29b685df2bd15a914ff03d3/images/Screenshot_1.jpg)
